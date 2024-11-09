@@ -1,14 +1,30 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Rutas para la gestión de compañías (empresas)
+  resources :companies do
+    # Anidación de usuarios y contactos bajo la empresa
+    resources :users, only: [:index, :new, :create] # CRUD completo para usuarios
+    resources :contacts, only: [:index, :new, :create] # CRUD completo para contactos
+    resources :segments, only: [:index, :new, :create] # CRUD completo para segmentos
+    resources :assets, only: [:index, :new, :create] # CRUD completo para recursos
+  end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Rutas para usuarios fuera de la anidación (por ejemplo, perfil de usuario)
+  resources :users, except: [:index, :new, :create] # Edición y eliminación de usuarios individuales
 
-  # Render dynamic PWA files from app/views/pwa/*
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # Rutas para la gestión de campañas
+  resources :campaigns do
+    resources :email_templates, only: [:index, :new, :create] # Anidar plantillas de email en campañas
+    resources :forms, only: [:index, :new, :create] # Anidar formularios en campañas
+  end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Rutas para plantillas de email y formularios fuera de la anidación
+  resources :email_templates, except: [:index, :new, :create]
+  resources :forms, except: [:index, :new, :create]
+
+  # Rutas para contactos y segmentos fuera de la anidación
+  resources :contacts, except: [:index, :new, :create]
+  resources :segments, except: [:index, :new, :create]
+
+  # Ruta principal de la aplicación
+  root "companies#index" # Cambia a la página principal que elijas
 end

@@ -55,3 +55,35 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+
+
+
+# Autenticación y Autorización
+gem 'devise'
+gem 'pundit'
+
+# Carga de archivos
+gem 'mini_magick'
+
+# Envío de Emails
+#gem 'mailjet' # o 'sendgrid-ruby'
+
+# Formularios
+gem 'simple_form'
+
+# UI y Estilos
+gem 'bootstrap', '~> 5.0.0' # o 'tailwindcss-rails'
+gem 'stimulus-rails'
+
+# Búsqueda
+gem 'pg_search'
+
+# Background Jobs
+gem 'sidekiq'
+
+# Desarrollo y Pruebas
+gem 'faker'
+gem 'better_errors'
+gem 'binding_of_caller'
+gem 'pry-rails'
