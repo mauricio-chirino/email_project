@@ -73,7 +73,7 @@ gem 'mini_magick'
 gem 'simple_form'
 
 # UI y Estilos
-gem 'bootstrap', '~> 5.0.0' # o 'tailwindcss-rails'
+gem 'bootstrap', '~> 5.3.3' # o 'tailwindcss-rails'
 gem 'stimulus-rails'
 
 # Búsqueda
