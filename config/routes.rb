@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+  # Configuración de Devise con controladores personalizados
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
+
+  # Ruta del dashboard para los administradores con filtro de autorización en el controlador
+  authenticated :user, ->(u) { u.admin? } do
+    root 'dashboard#index', as: :admin_root
+  end
+
+  # Ruta raíz para usuarios que no son administradores (Página principal)
+  unauthenticated do
+    root 'home#index', as: :unauthenticated_root
+  end
+
+  # Ruta principal para usuarios autenticados que no son administradores
+  root to: 'companies#index', constraints: ->(request) { request.env['warden'].user.present? }
+
   # Rutas para la gestión de compañías (empresas)
   resources :companies do
     # Anidación de usuarios y contactos bajo la empresa
@@ -8,7 +27,7 @@ Rails.application.routes.draw do
     resources :assets, only: [:index, :new, :create] # CRUD completo para recursos
   end
 
-  # Rutas para usuarios fuera de la anidación (por ejemplo, perfil de usuario)
+  # Rutas para usuarios fuera de la anidación (ej. perfil de usuario)
   resources :users, except: [:index, :new, :create] # Edición y eliminación de usuarios individuales
 
   # Rutas para la gestión de campañas
@@ -24,7 +43,6 @@ Rails.application.routes.draw do
   # Rutas para contactos y segmentos fuera de la anidación
   resources :contacts, except: [:index, :new, :create]
   resources :segments, except: [:index, :new, :create]
-
-  # Ruta principal de la aplicación
-  root "companies#index" # Cambia a la página principal que elijas
 end
+
+
